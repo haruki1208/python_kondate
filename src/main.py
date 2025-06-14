@@ -43,5 +43,6 @@ if st.button("ランダム食材でYouTube検索"):
         if results:
             for title, url in results:
                 st.markdown(f"{title}")
+                st.video(url)
         else:
             st.error("YouTube動画が見つかりませんでした。")

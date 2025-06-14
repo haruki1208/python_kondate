@@ -1,13 +1,10 @@
 import os
-from dotenv import load_dotenv
 import requests
-import random  # ランダム選択のために追加
+import streamlit as st
 
-# .envファイルから環境変数を読み込み
-load_dotenv()
 
 # APIキーを取得
-YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
+YOUTUBE_API_KEY = st.secrets["YOUTUBE_API_KEY"]
 
 
 # YouTube動画を検索する関数
