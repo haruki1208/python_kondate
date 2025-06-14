@@ -1,29 +1,9 @@
 import streamlit as st
-import json
-import os
+from ingredients_manager import load_ingredients, save_ingredients
 
-# 保存ファイル名
-DATA_FILE = "ingredients.json"
-
-
-# 食材データの読み込み
-def load_ingredients():
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
-
-
-# 食材データの保存
-def save_ingredients(ingredients):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(ingredients, f, ensure_ascii=False, indent=2)
-
-
-# Streamlit UI
 st.title("🍳 食材リスト管理")
 
-# 現在の食材を読み込み
+# 現在の食材を読み込み リスト型？
 ingredients = load_ingredients()
 
 # 新しい食材の追加
