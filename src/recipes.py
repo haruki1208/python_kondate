@@ -31,9 +31,9 @@ def search_youtube(query, max_results=1):
         return []
 
 
-# 献立候補を表示する関数
-def display_recipes(recipes):
-    """献立候補をターミナルに表示"""
-    print("\n--- 献立候補 ---")
-    for idx, recipe in enumerate(recipes, 1):
-        print(f"{idx}. {recipe['title']}\n   {recipe['link']}\n")
+# # 献立候補を表示する関数
+# def display_recipes(recipes):
+#     """献立候補をターミナルに表示"""
+#     print("\n--- 献立候補 ---")
+#     for idx, recipe in enumerate(recipes, 1):
+#         print(f"{idx}. {recipe['title']}\n   {recipe['link']}\n")
