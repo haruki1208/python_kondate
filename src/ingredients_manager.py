@@ -10,5 +10,5 @@ def load_ingredients():
 
 
 # 食材を保存する関数
-def save_ingredients(ingredients):
-    save_json(ingredients, json_file)
+def save_ingredients(data):
+    save_json(data, json_file)

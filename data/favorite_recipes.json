@@ -8,5 +8,14 @@
         "ウィンナー",
         "卵",
         "ごはん"
-    ]
+    ],
+    "カルボナーラ": {
+        "ingredients": [
+            "ベーコン",
+            "卵",
+            "パスタ",
+            "チーズ"
+        ],
+        "url": "https://youtu.be/8y10r6Ts0k8?si=et3OIkwkSSYgxhl2"
+    }
 }

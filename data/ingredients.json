@@ -225,9 +225,14 @@
     "checked": false
   },
   {
+    "name": "ひき肉",
+    "group": "肉類",
+    "checked": true
+  },
+  {
     "name": "そば",
     "group": "主食",
-    "checked": false
+    "checked": true
   },
   {
     "name": "鮭",
