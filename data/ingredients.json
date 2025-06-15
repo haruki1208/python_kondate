@@ -22,202 +22,197 @@
   {
     "name": "ピーマン",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ほうれん草",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ブロッコリー",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "トマト",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "きゅうり",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "なす",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "大根",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ごぼう",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "さつまいも",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "かぼちゃ",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "しいたけ",
     "group": "きのこ",
-    "checked": true
+    "checked": false
   },
   {
     "name": "えのき",
     "group": "きのこ",
-    "checked": true
+    "checked": false
   },
   {
     "name": "しめじ",
     "group": "きのこ",
-    "checked": true
+    "checked": false
   },
   {
     "name": "まいたけ",
     "group": "きのこ",
-    "checked": true
+    "checked": false
   },
   {
     "name": "アスパラガス",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "オクラ",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "もやし",
     "group": "野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "豆腐",
     "group": "大豆製品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "納豆",
     "group": "大豆製品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "卵",
     "group": "卵・乳製品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "鶏肉",
     "group": "肉類",
-    "checked": true
+    "checked": false
   },
   {
     "name": "豚肉",
     "group": "肉類",
-    "checked": true
+    "checked": false
   },
   {
     "name": "牛肉",
     "group": "肉類",
-    "checked": true
+    "checked": false
   },
   {
     "name": "魚",
     "group": "魚介類",
-    "checked": true
+    "checked": false
   },
   {
     "name": "エビ",
     "group": "魚介類",
-    "checked": true
+    "checked": false
   },
   {
     "name": "イカ",
     "group": "魚介類",
-    "checked": true
+    "checked": false
   },
   {
     "name": "貝類",
     "group": "魚介類",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ウインナー",
     "group": "加工品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ベーコン",
     "group": "加工品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ソーセージ",
     "group": "加工品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ハム",
     "group": "加工品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "チーズ",
     "group": "卵・乳製品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ヨーグルト",
     "group": "卵・乳製品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "牛乳",
     "group": "卵・乳製品",
-    "checked": true
+    "checked": false
   },
   {
     "name": "バター",
     "group": "卵・乳製品",
-    "checked": true
-  },
-  {
-    "name": "酢",
-    "group": "調味料",
-    "checked": true
+    "checked": false
   },
   {
     "name": "生姜",
     "group": "香味野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "にんにく",
     "group": "香味野菜",
-    "checked": true
+    "checked": false
   },
   {
     "name": "パン",
     "group": "主食",
-    "checked": true
+    "checked": false
   },
   {
     "name": "ごはん",
     "group": "主食",
-    "checked": true
+    "checked": false
   },
   {
     "name": "パスタ",
@@ -227,16 +222,16 @@
   {
     "name": "うどん",
     "group": "主食",
-    "checked": true
+    "checked": false
   },
   {
     "name": "そば",
     "group": "主食",
-    "checked": true
+    "checked": false
   },
   {
     "name": "鮭",
     "group": "魚介類",
-    "checked": true
+    "checked": false
   }
 ]

@@ -1,21 +1,19 @@
 import streamlit as st
 import random
 
-from collections import defaultdict
-
 from recipes import search_youtube
 from ingredients_manager import load_ingredients, save_ingredients
 
 st.title("🍳 今日何作る？")
 
+# --- 削除ボタンで削除された食材名を一時的に保存 ---
+if "deleted_ingredient" not in st.session_state:
+    st.session_state.deleted_ingredient = None
+
 # 現在の食材を読み込み
 ingredients = load_ingredients()
 
-# checkedフィールドがない場合は追加
-for item in ingredients:
-    if "checked" not in item:
-        item["checked"] = True
-save_ingredients(ingredients)  # 初回のみ
+from collections import defaultdict
 
 # 食材をグループごとにまとめる
 grouped_ingredients = defaultdict(list)
@@ -39,19 +37,40 @@ with col2:
 # --- グループごとに表示 ---
 st.subheader("🧾 現在の食材リスト（グループ別）")
 selected_ingredients = []
+
 for group, items in grouped_ingredients.items():
     if not items:
         continue
     with st.expander(group, expanded=True):
         for item in items:
-            checked = st.checkbox(
-                item["name"], value=item["checked"], key=f"{group}_{item['name']}"
-            )
-            if checked != item["checked"]:
+            col1, col2 = st.columns([8, 1])
+            with col1:
+                checked = st.checkbox(
+                    item.get("name", ""),
+                    value=item.get("checked", True),
+                    key=f"{group}_{item.get('name','')}",
+                )
+            with col2:
+                # ゴミ箱アイコン付き削除ボタン
+                if st.button("×", key=f"delete_{group}_{item.get('name','')}"):
+                    # 削除処理
+                    ingredients = [
+                        i for i in ingredients if i.get("name") != item.get("name")
+                    ]
+                    save_ingredients(ingredients)
+                    st.session_state.deleted_ingredient = item.get("name")
+            if checked != item.get("checked", True):
                 item["checked"] = checked
                 save_ingredients(ingredients)
             if checked:
-                selected_ingredients.append(item["name"])
+                selected_ingredients.append(item.get("name", ""))
+
+# 削除後のメッセージ表示
+if st.session_state.deleted_ingredient:
+    st.success(
+        f"「{st.session_state.deleted_ingredient}」を削除しました。ページを再読み込みするとリストが更新されます。"
+    )
+    st.session_state.deleted_ingredient = None
 
 # YouTube動画を表示
 if st.button("選択した食材でYouTube検索"):
