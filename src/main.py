@@ -1,6 +1,8 @@
 import streamlit as st
 import random
 
+from collections import defaultdict
+
 from recipes import search_youtube
 from ingredients_manager import load_ingredients, save_ingredients
 
@@ -15,8 +17,7 @@ for item in ingredients:
         item["checked"] = True
 save_ingredients(ingredients)  # 初回のみ
 
-from collections import defaultdict
-
+# 食材をグループごとにまとめる
 grouped_ingredients = defaultdict(list)
 for item in ingredients:
     group = item.get("group", "その他")
