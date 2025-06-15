@@ -6,16 +6,10 @@ from ingredients_manager import load_ingredients, save_ingredients
 
 st.title("🍳 今日何作る？")
 
-# --- 削除ボタンで削除された食材名を一時的に保存 ---
-if "deleted_ingredient" not in st.session_state:
-    st.session_state.deleted_ingredient = None
-
-# 現在の食材を読み込み
 ingredients = load_ingredients()
 
 from collections import defaultdict
 
-# 食材をグループごとにまとめる
 grouped_ingredients = defaultdict(list)
 for item in ingredients:
     group = item.get("group", "その他")
@@ -43,34 +37,16 @@ for group, items in grouped_ingredients.items():
         continue
     with st.expander(group, expanded=True):
         for item in items:
-            col1, col2 = st.columns([8, 1])
-            with col1:
-                checked = st.checkbox(
-                    item.get("name", ""),
-                    value=item.get("checked", True),
-                    key=f"{group}_{item.get('name','')}",
-                )
-            with col2:
-                # ゴミ箱アイコン付き削除ボタン
-                if st.button("×", key=f"delete_{group}_{item.get('name','')}"):
-                    # 削除処理
-                    ingredients = [
-                        i for i in ingredients if i.get("name") != item.get("name")
-                    ]
-                    save_ingredients(ingredients)
-                    st.session_state.deleted_ingredient = item.get("name")
+            checked = st.checkbox(
+                item.get("name"),
+                value=item.get("checked", True),
+                key=f"{group}_{item.get('name')}",
+            )
             if checked != item.get("checked", True):
                 item["checked"] = checked
                 save_ingredients(ingredients)
             if checked:
-                selected_ingredients.append(item.get("name", ""))
-
-# 削除後のメッセージ表示
-if st.session_state.deleted_ingredient:
-    st.success(
-        f"「{st.session_state.deleted_ingredient}」を削除しました。ページを再読み込みするとリストが更新されます。"
-    )
-    st.session_state.deleted_ingredient = None
+                selected_ingredients.append(item.get("name"))
 
 # YouTube動画を表示
 if st.button("選択した食材でYouTube検索"):
@@ -98,8 +74,28 @@ if st.button("追加"):
     if new_ingredient and all(new_ingredient != i["name"] for i in ingredients):
         ingredients.append({"name": new_ingredient, "group": group, "checked": True})
         save_ingredients(ingredients)
-        st.success(f"「{new_ingredient}」を追加しました！")
+        st.success(
+            f"「{new_ingredient}」を追加しました！ページを再読み込みしてください。"
+        )
     elif any(new_ingredient == i["name"] for i in ingredients):
         st.warning("その食材はすでに登録されています。")
     else:
         st.error("食材を入力してください。")
+
+# --- 食材削除機能（リスト下部に設置） ---
+st.markdown("---")
+st.subheader("🗑️ 食材を削除")
+
+ingredient_names = [item.get("name") for item in ingredients]
+if ingredient_names:
+    delete_target = st.selectbox(
+        "削除したい食材を選択", ingredient_names, key="delete_select"
+    )
+    if st.button("選択した食材を削除"):
+        ingredients = [i for i in ingredients if i.get("name") != delete_target]
+        save_ingredients(ingredients)
+        st.success(
+            f"「{delete_target}」を削除しました。ページを再読み込みしてください。"
+        )
+else:
+    st.info("削除できる食材がありません。")
