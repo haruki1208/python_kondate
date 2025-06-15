@@ -7,7 +7,9 @@ from favorite_recipes_manager import load_favorite_recipes, save_favorite_recipe
 
 st.title("🍳 今日何作る？")
 
+# 初期化
 ingredients = load_ingredients()
+favorite_recipes = load_favorite_recipes()
 
 from collections import defaultdict
 
@@ -26,11 +28,11 @@ for group, items in grouped_ingredients.items():
 
 
 # グループ名で始まるものは選択不可にする
-def filter_options(options):
-    return [opt for opt in options if not opt.startswith("---")]
+# def filter_options(options):
+#     return [opt for opt in options if not opt.startswith("---")]
 
 
-selectable_options = filter_options(grouped_options)
+# selectable_options = filter_options(grouped_options)
 
 # --- 全選択・全解除ボタン ---
 col1, col2 = st.columns(2)
@@ -96,14 +98,30 @@ if st.button("選択した食材でお気に入りレシピ検索"):
         st.warning("食材を1つ以上選択してください。")
     else:
         found = False
-        for recipe_name, recipe_ingredients in favorite_recipes.items():
+        for recipe in favorite_recipes:
+            recipe_name = recipe.get("name")
+            recipe_ingredients = recipe.get("ingredients", [])
+            recipe_url = recipe.get("url", "")
             # 選択中の食材が1つでも含まれていれば表示
             if any(
                 ingredient in recipe_ingredients for ingredient in selected_ingredients
             ):
-                st.markdown(f"**{recipe_name}**")
-                st.markdown("使う食材：" + ", ".join(recipe_ingredients))
                 found = True
+                # レシピ名クリックでURL or YouTube検索
+                if recipe_url:
+                    st.markdown(
+                        f"**[{recipe_name}]({recipe_url})**<br>使う食材：{', '.join(recipe_ingredients)}",
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    # YouTube検索リンク
+                    yt_url = (
+                        f"https://www.youtube.com/results?search_query={recipe_name}"
+                    )
+                    st.markdown(
+                        f"**[{recipe_name}（YouTube検索）]({yt_url})**<br>使う食材：{', '.join(recipe_ingredients)}",
+                        unsafe_allow_html=True,
+                    )
         if not found:
             st.info("選択した食材を含むお気に入りレシピはありません。")
 
@@ -112,33 +130,41 @@ st.markdown("---")
 st.subheader("⭐ お気に入りレシピ登録")
 
 with st.form("favorite_recipe_form"):
-    recipe_name = st.text_input("レシピ名（必須）")
+    new_recipe_name = st.text_input("レシピ名（必須）")
     selected_ingredients = st.multiselect(
         "使う食材（複数選択・必須）",
-        options=selectable_options,
+        options=grouped_options,
         default=[],
         help="グループ名で区切られています。食材名で検索もできます。",
     )
-    recipe_url = st.text_input("レシピURL（任意）")
+    new_recipe_url = st.text_input("レシピURL（任意）")
     submitted = st.form_submit_button("お気に入りレシピを登録")
 
     if submitted:
-        if not recipe_name:
+        if not new_recipe_name:
             st.error("レシピ名は必須です。")
         elif not selected_ingredients:
             st.error("使う食材を1つ以上選択してください。")
         else:
             favorite_recipes = load_favorite_recipes()
             # レシピ名が重複しないように
-            if recipe_name in favorite_recipes:
-                st.warning("同じレシピ名がすでに登録されています。")
-            else:
-                favorite_recipes[recipe_name] = {
-                    "ingredients": selected_ingredients,
-                    "url": recipe_url,
-                }
+            if new_recipe_name and all(
+                new_recipe_name != i["name"] for i in favorite_recipes
+            ):
+                # 新しいレシピを追加
+                favorite_recipes.append(
+                    {
+                        "name": new_recipe_name,
+                        "ingredients": selected_ingredients,
+                        "url": new_recipe_url,
+                    }
+                )
                 save_favorite_recipes(favorite_recipes)
                 st.success("お気に入りレシピを登録しました！")
+            elif any(new_recipe_name == i["name"] for i in favorite_recipes):
+                st.warning("同じレシピ名がすでに登録されています。")
+            else:
+                st.error("レシピを入力してください。")
 
 
 # 新しい食材の追加
@@ -167,10 +193,10 @@ with st.expander("➕ 食材追加", expanded=True):
 st.markdown("---")
 delete_targets: list[str] = []
 with st.expander("🗑️ 食材を削除", expanded=True):
-    if selectable_options:
+    if grouped_options:
         delete_targets = st.multiselect(
             "削除したい食材を選択（複数選択可）",
-            options=selectable_options,
+            options=grouped_options,
             default=[],
             help="削除したい食材を複数選択できます。",
             key="delete_multiselect",
