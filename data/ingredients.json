@@ -7,7 +7,7 @@
   {
     "name": "じゃがいも",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "たまねぎ",
@@ -17,221 +17,226 @@
   {
     "name": "キャベツ",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ピーマン",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ほうれん草",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ブロッコリー",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "トマト",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "きゅうり",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "なす",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "大根",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ごぼう",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "さつまいも",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "かぼちゃ",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "しいたけ",
     "group": "きのこ",
-    "checked": false
+    "checked": true
   },
   {
     "name": "えのき",
     "group": "きのこ",
-    "checked": false
+    "checked": true
   },
   {
     "name": "しめじ",
     "group": "きのこ",
-    "checked": false
+    "checked": true
   },
   {
     "name": "まいたけ",
     "group": "きのこ",
-    "checked": false
+    "checked": true
   },
   {
     "name": "アスパラガス",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "オクラ",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "もやし",
     "group": "野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "豆腐",
     "group": "大豆製品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "納豆",
     "group": "大豆製品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "卵",
     "group": "卵・乳製品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "鶏肉",
     "group": "肉類",
-    "checked": false
+    "checked": true
   },
   {
     "name": "豚肉",
     "group": "肉類",
-    "checked": false
+    "checked": true
   },
   {
     "name": "牛肉",
     "group": "肉類",
-    "checked": false
+    "checked": true
   },
   {
     "name": "魚",
     "group": "魚介類",
-    "checked": false
+    "checked": true
   },
   {
     "name": "エビ",
     "group": "魚介類",
-    "checked": false
+    "checked": true
   },
   {
     "name": "イカ",
     "group": "魚介類",
-    "checked": false
+    "checked": true
   },
   {
     "name": "貝類",
     "group": "魚介類",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ウインナー",
     "group": "加工品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ベーコン",
     "group": "加工品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ソーセージ",
     "group": "加工品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ハム",
     "group": "加工品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "チーズ",
     "group": "卵・乳製品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ヨーグルト",
     "group": "卵・乳製品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "牛乳",
     "group": "卵・乳製品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "バター",
     "group": "卵・乳製品",
-    "checked": false
+    "checked": true
   },
   {
     "name": "酢",
     "group": "調味料",
-    "checked": false
+    "checked": true
   },
   {
     "name": "生姜",
     "group": "香味野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "にんにく",
     "group": "香味野菜",
-    "checked": false
+    "checked": true
   },
   {
     "name": "パン",
     "group": "主食",
-    "checked": false
+    "checked": true
   },
   {
     "name": "ごはん",
     "group": "主食",
-    "checked": false
+    "checked": true
   },
   {
     "name": "パスタ",
     "group": "主食",
-    "checked": false
+    "checked": true
   },
   {
     "name": "うどん",
     "group": "主食",
-    "checked": false
+    "checked": true
   },
   {
     "name": "そば",
     "group": "主食",
-    "checked": false
+    "checked": true
+  },
+  {
+    "name": "鮭",
+    "group": "魚介類",
+    "checked": true
   }
 ]

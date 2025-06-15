@@ -54,10 +54,13 @@ for group, items in grouped_ingredients.items():
 
 # YouTube動画を表示
 if st.button("選択した食材でYouTube検索"):
-    if len(selected_ingredients) < 2:
-        st.warning("食材が2つ以上必要です。")
+    if len(selected_ingredients) == 0:
+        st.warning("食材を1つ以上選択してください。")
     else:
-        selected = random.sample(selected_ingredients, 2)
+        if len(selected_ingredients) == 1:
+            selected = selected_ingredients
+        else:
+            selected = random.sample(selected_ingredients, 2)
         query = " ".join(selected)
         st.info(f"検索ワード: {query}")
         results = search_youtube(query)
@@ -70,12 +73,9 @@ if st.button("選択した食材でYouTube検索"):
 
 # 新しい食材の追加
 new_ingredient = st.text_input("食材を入力して追加", "")
-
+group = st.selectbox("グループを選択", list(grouped_ingredients.keys()) + ["その他"])
 if st.button("追加"):
     if new_ingredient and all(new_ingredient != i["name"] for i in ingredients):
-        group = st.selectbox(
-            "グループを選択", list(grouped_ingredients.keys()) + ["その他"]
-        )
         ingredients.append({"name": new_ingredient, "group": group, "checked": True})
         save_ingredients(ingredients)
         st.success(f"「{new_ingredient}」を追加しました！")
