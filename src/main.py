@@ -1,11 +1,38 @@
 import streamlit as st
 import random
+from supabase import create_client, Client
 
 from recipes import search_youtube
 from ingredients_manager import load_ingredients, save_ingredients
 from favorite_recipes_manager import load_favorite_recipes, save_favorite_recipes
 
-st.title("🍳 今日何作る？")
+# Supabase接続設定
+url = "https://hogehoge.supabase.co"  # プロジェクトURL
+key = "your_anon_key"  # anonキー
+supabase: Client = create_client(url, key)
+
+st.title("🍳 今日何作る？（ログイン対応版）")
+
+# --- ログインフォーム ---
+email = st.text_input("📧 メールアドレス")
+password = st.text_input("🔑 パスワード", type="password")
+
+if st.button("ログイン / 新規登録"):
+    try:
+        # まずログインを試す
+        user = supabase.auth.sign_in_with_password(
+            {"email": email, "password": password}
+        )
+        st.session_state["user"] = user
+        st.success(f"ログイン成功: {email}")
+    except Exception:
+        try:
+            # ログイン失敗 → 新規登録を試す
+            user = supabase.auth.sign_up({"email": email, "password": password})
+            st.session_state["user"] = user
+            st.success(f"新規登録成功: {email}")
+        except Exception as e:
+            st.error(f"ログイン/登録失敗: {e}")
 
 # 初期化
 ingredients = load_ingredients()
