@@ -1,22 +1,9 @@
 import streamlit as st
 from supabase import create_client, Client
 
-st.title("タイトル（テスト）")
-
-### 初期設定 ###
+### Supabase接続設定 ###
 SUPABASE_URL = st.secrets["SUPABASE"]["URL"]
 SUPABASE_KEY = st.secrets["SUPABASE"]["KEY"]
-# YOUTUBE_API_KEY = st.secrets["YOUTUBE_API"]["KEY"]
-
-# st.write("SUPABASE_URL:", SUPABASE_URL)
-# st.write("ANON_KEY:", ANON_KEY)
-# st.write("YOUTUBE_API_KEY:", YOUTUBE_API_KEY)
-
-# st.write("=== secrets の中身 ===")
-# for key, value in st.secrets.items():
-#     st.write(f"{key} = {value}")
-
-# Supabase接続設定
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 ### 関数定義 ###
@@ -72,32 +59,3 @@ def login_signup_page():
                 )
             except Exception as e:
                 st.error(f"新規登録に失敗しました: {str(e)}")
-
-
-# --- メイン画面 ---
-def main_app():
-    st.title("メインアプリケーション")
-    st.write(f"ようこそ、{st.session_state.user.email}さん！")
-
-    menu = ["ホーム", "コンテンツ"]
-    choice = st.sidebar.selectbox("メニュー", menu)
-
-    if choice == "ホーム":
-        st.subheader("ホーム")
-        st.write("ホームです。")
-
-    elif choice == "コンテンツ":
-        st.subheader("コンテンツ")
-        st.write("ここにコンテンツを表示できます。")
-
-    if st.sidebar.button("ログアウト"):
-        sign_out()
-        st.rerun()
-
-
-### コントロール ###
-# --- 画面切り替え ---
-if "user" not in st.session_state:
-    login_signup_page()
-else:
-    main_app()
