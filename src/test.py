@@ -1,103 +1,122 @@
 import streamlit as st
 from supabase import create_client, Client
 
-st.title("タイトル（テスト）")
+st.title("献立提案（テスト）")
 
 ### 初期設定 ###
 SUPABASE_URL = st.secrets["SUPABASE"]["URL"]
 SUPABASE_KEY = st.secrets["SUPABASE"]["KEY"]
-# YOUTUBE_API_KEY = st.secrets["YOUTUBE_API"]["KEY"]
-
-# st.write("SUPABASE_URL:", SUPABASE_URL)
-# st.write("ANON_KEY:", ANON_KEY)
-# st.write("YOUTUBE_API_KEY:", YOUTUBE_API_KEY)
-
-# st.write("=== secrets の中身 ===")
-# for key, value in st.secrets.items():
-#     st.write(f"{key} = {value}")
-
 # Supabase接続設定
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+# テスト用アカウント情報
+email = st.secrets["TEST"]["email"]
+password = st.secrets["TEST"]["password"]
+res = supabase.auth.sign_in_with_password({"email": email, "password": password})
+supabase.auth.sign_in_with_password({"email": email, "password": password}).user.id
+st.session_state.user = res.user
+# ユーザーID
+user_id = st.session_state.user.id
+# ユーザ名
+user_name = (
+    supabase.table("profiles")
+    .select("name")
+    .eq("user_id", user_id)
+    .execute()
+    .data[0]["name"]
+)
 
 ### 関数定義 ###
-# # セッションステート初期化
-# if "user" not in st.session_state:
-#     st.session_state["user"] = None
-
-
-# --- 新規登録処理 ---
-def sign_up(email, password):
-    return supabase.auth.sign_up({"email": email, "password": password})
-
-
-# --- ログイン処理 ---
-def sign_in(email, password):
-    return supabase.auth.sign_in_with_password({"email": email, "password": password})
-
-
-# --- ログアウト処理 ---
-def sign_out():
-    supabase.auth.sign_out()
-    st.session_state.clear()
 
 
 ### 画面定義 ###
-# --- ログインページ ---
-def login_signup_page():
-    st.title("ログイン / 新規登録")
-    tab1, tab2 = st.tabs(["ログイン", "新規登録"])
-
-    with tab1:
-        email = st.text_input("メールアドレス", key="login_email")
-        password = st.text_input("パスワード", type="password", key="login_password")
-        if st.button("ログイン"):
-            try:
-                res = sign_in(email, password)
-                st.session_state.user = res.user
-                st.success("ログインに成功しました")
-                st.rerun()
-            except Exception as e:
-                st.error(f"ログインに失敗しました: {str(e)}")
-
-    with tab2:
-        new_email = st.text_input("メールアドレス", key="signup_email")
-        new_password = st.text_input(
-            "パスワード", type="password", key="signup_password"
-        )
-        if st.button("新規登録"):
-            try:
-                res = sign_up(new_email, new_password)
-                st.success(
-                    "アカウントが作成されました。メールを確認してアカウントを有効化してください。"
-                )
-            except Exception as e:
-                st.error(f"新規登録に失敗しました: {str(e)}")
-
-
 # --- メイン画面 ---
 def main_app():
-    st.title("メインアプリケーション")
-    st.write(f"ようこそ、{st.session_state.user.email}さん！")
+    st.subheader("食材管理")
 
-    menu = ["ホーム", "コンテンツ"]
+    st.sidebar.write(f"ログイン中：{user_name} さん")
+    menu = ["食材管理", "コンテンツ"]
     choice = st.sidebar.selectbox("メニュー", menu)
 
-    if choice == "ホーム":
-        st.subheader("ホーム")
-        st.write("ホームです。")
+    if choice == "食材管理":
+
+        # --- 食材追加フォーム ---
+        with st.expander("➕ 食材追加", expanded=False):
+            # 既存のグループ名を取得
+            response = (
+                supabase.table("ingredients")
+                .select("group")
+                .eq("user_id", user_id)
+                .order("group")
+                .execute()
+            )
+            groups = list({item["group"] for item in response.data})  # 重複削除
+
+            # 食材名入力
+            name = st.text_input("追加する食材名")
+
+            # グループ選択 or 入力
+            group_choice = st.selectbox(
+                "既存グループを選択（または「新規」）", ["新規"] + groups
+            )
+            if group_choice == "新規":
+                group = st.text_input("新しいグループ名")
+            else:
+                group = group_choice
+
+            # 追加ボタン
+            if st.button("追加"):
+                if name and group:
+                    ingredient = {"user_id": user_id, "name": name, "group": group}
+                    supabase.table("ingredients").insert(ingredient).execute()
+                    st.success(f"{name} を {group} グループに追加しました！")
+                else:
+                    st.error("食材名とグループを入力してください")
+
+        # --- 食材リスト ---
+        with st.expander("🧾 食材リスト", expanded=True):
+            response = (
+                supabase.table("ingredients_sorted")
+                .select("*")
+                .eq("user_id", user_id)
+                .execute()
+            )
+            ingredients = response.data
+
+            grouped = {}
+            for ingredient in ingredients:
+                group = ingredient["group"]
+                if group not in grouped:
+                    grouped[group] = []
+                grouped[group].append(ingredient)
+
+            for group, items in grouped.items():
+                st.write(f"### {group}")
+                for ingredient in items:
+                    cols = st.columns([0.7, 0.3])
+                    with cols[0]:
+                        st.checkbox(
+                            ingredient["name"],
+                            value=ingredient["checked"],
+                            key=f"chk_{ingredient['id']}",
+                            on_change=update_checked,
+                            args=(
+                                ingredient["id"],
+                                not ingredient["checked"],
+                            ),  # チェック状態を反転した値をDB更新関数に渡す
+                        )
+                    with cols[1]:
+                        st.button(
+                            "🗑️",
+                            key=f"del_{ingredient['id']}",
+                            on_click=confirm_delete,
+                            args=(ingredient["id"], ingredient["name"]),
+                        )
 
     elif choice == "コンテンツ":
         st.subheader("コンテンツ")
         st.write("ここにコンテンツを表示できます。")
 
-    if st.sidebar.button("ログアウト"):
-        sign_out()
-        st.rerun()
-
 
 ### コントロール ###
 # --- 画面切り替え ---
-if "user" not in st.session_state:
-    login_signup_page()
-else:
-    main_app()
+main_app()
