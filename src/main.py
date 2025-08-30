@@ -10,7 +10,7 @@ from ingredients_manager import ingredients_manager
 ### 画面定義 ###
 # --- ログインページ ---
 def login_signup_page():
-    st.title("ログイン / 新規登録")
+    st.subheader("ログイン / 新規登録")
     tab1, tab2 = st.tabs(["ログイン", "新規登録"])
 
     with tab1:
@@ -18,6 +18,11 @@ def login_signup_page():
         password = st.text_input("パスワード", type="password", key="login_password")
         if st.button("ログイン"):
             try:
+                # emailが0818の場合、テスト用アカウントでログイン
+                if email == "0818":
+                    email = st.secrets["TEST"]["email"]
+                    password = st.secrets["TEST"]["password"]
+
                 res = sign_in(email, password)
                 st.session_state.user = res.user
                 st.success("ログインに成功しました")
