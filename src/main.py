@@ -61,8 +61,8 @@ def main_app():
     ### サイドバー ###
     st.sidebar.write(f"ログイン中：{user_name} さん")
     menu = [
-        "食材管理",
         "レシピ検索",
+        "食材管理",
         "お気に入りレシピ",
         "買い物リスト",
         "料理記録",
@@ -70,11 +70,11 @@ def main_app():
     ]
     choice = st.sidebar.selectbox("メニュー", menu)
 
-    if choice == "食材管理":
-        ingredients_manager(user_id)
-
-    elif choice == "レシピ検索":
+    if choice == "レシピ検索":
         suggest_recipes(user_id)
+
+    elif choice == "食材管理":
+        ingredients_manager(user_id)
 
     elif choice == "お気に入りレシピ":
         st.write("お気に入りレシピ")  # ここにお気に入りレシピのコードを追加予定
