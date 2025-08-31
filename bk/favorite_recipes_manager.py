@@ -1,4 +1,4 @@
-from json_control import load_json, save_json
+from bk.json_control import load_json, save_json
 
 # お気に入りレシピ管理Jsonファイル名
 json_file = "favorite_recipes.json"

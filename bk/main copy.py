@@ -2,34 +2,34 @@ import streamlit as st
 import random
 from supabase import create_client, Client
 
-from recipes import search_youtube
+from bk.recipes import search_youtube
 from ingredients_manager import load_ingredients, save_ingredients
-from favorite_recipes_manager import load_favorite_recipes, save_favorite_recipes
+from bk.favorite_recipes_manager import load_favorite_recipes, save_favorite_recipes
 
-st.title("🍳 今日何作る？（ログイン対応版）")
+# st.title("🍳 今日何作る？（ログイン対応版）")
 
-# --- ログインフォーム ---
-email = st.text_input("📧 メールアドレス")
-password = st.text_input("🔑 パスワード", type="password")
+# # --- ログインフォーム ---
+# email = st.text_input("📧 メールアドレス")
+# password = st.text_input("🔑 パスワード", type="password")
 
 # 初期化
-ingredients = load_ingredients()
-favorite_recipes = load_favorite_recipes()
+# ingredients = load_ingredients()
+# favorite_recipes = load_favorite_recipes()
 
-from collections import defaultdict
+# from collections import defaultdict
 
-# 食材リストをグループごとにまとめる
-grouped_ingredients = defaultdict(list)
-for item in ingredients:
-    group = item.get("group", "その他")
-    grouped_ingredients[group].append(item)
+# # 食材リストをグループごとにまとめる
+# grouped_ingredients = defaultdict(list)
+# for item in ingredients:
+#     group = item.get("group", "その他")
+#     grouped_ingredients[group].append(item)
 
-# グループごとに区切りを入れた食材名リストを作成（グループ名は選択不可）
-grouped_options = []
-for group, items in grouped_ingredients.items():
-    if items:
-        # grouped_options.append(f"--- {group} ---")  # 区切りとして表示
-        grouped_options.extend([item["name"] for item in items])
+# # グループごとに区切りを入れた食材名リストを作成（グループ名は選択不可）
+# grouped_options = []
+# for group, items in grouped_ingredients.items():
+#     if items:
+#         # grouped_options.append(f"--- {group} ---")  # 区切りとして表示
+#         grouped_options.extend([item["name"] for item in items])
 
 
 # グループ名で始まるものは選択不可にする
@@ -52,25 +52,25 @@ with col2:
             item["checked"] = False
         save_ingredients(ingredients)
 
-# --- グループごとに表示 ---
-st.subheader("🧾 現在の食材リスト")
-selected_ingredients = []
+# # --- グループごとに表示 ---
+# st.subheader("🧾 現在の食材リスト")
+# selected_ingredients = []
 
-for group, items in grouped_ingredients.items():
-    if not items:
-        continue
-    with st.expander(group, expanded=True):
-        for item in items:
-            checked = st.checkbox(
-                item.get("name"),
-                value=item.get("checked", True),
-                key=f"{group}_{item.get('name')}",
-            )
-            if checked != item.get("checked", True):
-                item["checked"] = checked
-                save_ingredients(ingredients)
-            if checked:
-                selected_ingredients.append(item.get("name"))
+# for group, items in grouped_ingredients.items():
+#     if not items:
+#         continue
+#     with st.expander(group, expanded=True):
+#         for item in items:
+#             checked = st.checkbox(
+#                 item.get("name"),
+#                 value=item.get("checked", True),
+#                 key=f"{group}_{item.get('name')}",
+#             )
+#             if checked != item.get("checked", True):
+#                 item["checked"] = checked
+#                 save_ingredients(ingredients)
+#             if checked:
+#                 selected_ingredients.append(item.get("name"))
 
 # YouTube動画を表示
 st.markdown("---")
@@ -172,47 +172,47 @@ with st.form("favorite_recipe_form"):
                 st.error("レシピを入力してください。")
 
 
-# 新しい食材の追加
-st.markdown("---")
-with st.expander("➕ 食材追加", expanded=True):
-    new_ingredient = st.text_input("食材を入力して追加", "")
-    group = st.selectbox(
-        "グループを選択", list(grouped_ingredients.keys()) + ["その他"]
-    )
+# # 新しい食材の追加
+# st.markdown("---")
+# with st.expander("➕ 食材追加", expanded=True):
+#     new_ingredient = st.text_input("食材を入力して追加", "")
+#     group = st.selectbox(
+#         "グループを選択", list(grouped_ingredients.keys()) + ["その他"]
+#     )
 
-    if st.button("追加"):
-        if new_ingredient and all(new_ingredient != i["name"] for i in ingredients):
-            ingredients.append(
-                {"name": new_ingredient, "group": group, "checked": True}
-            )
-            save_ingredients(ingredients)
-            st.success(
-                f"「{new_ingredient}」を追加しました！ページを再読み込みしてください。"
-            )
-        elif any(new_ingredient == i["name"] for i in ingredients):
-            st.warning("その食材はすでに登録されています。")
-        else:
-            st.error("食材を入力してください。")
+#     if st.button("追加"):
+#         if new_ingredient and all(new_ingredient != i["name"] for i in ingredients):
+#             ingredients.append(
+#                 {"name": new_ingredient, "group": group, "checked": True}
+#             )
+#             save_ingredients(ingredients)
+#             st.success(
+#                 f"「{new_ingredient}」を追加しました！ページを再読み込みしてください。"
+#             )
+#         elif any(new_ingredient == i["name"] for i in ingredients):
+#             st.warning("その食材はすでに登録されています。")
+#         else:
+#             st.error("食材を入力してください。")
 
-# --- 食材削除機能（リスト下部に設置） ---
-st.markdown("---")
-delete_targets: list[str] = []
-with st.expander("🗑️ 食材を削除", expanded=True):
-    if grouped_options:
-        delete_targets = st.multiselect(
-            "削除したい食材を選択（複数選択可）",
-            options=grouped_options,
-            default=[],
-            help="削除したい食材を複数選択できます。",
-            key="delete_multiselect",
-        )
-        if st.button("選択した食材を削除"):
-            ingredients = [
-                i for i in ingredients if i.get("name", "") not in delete_targets
-            ]
-            save_ingredients(ingredients)
-            st.success(
-                f"{', '.join(delete_targets)} を削除しました。ページを再読み込みしてください。"
-            )
-    else:
-        st.info("削除できる食材がありません。")
+# # --- 食材削除機能（リスト下部に設置） ---
+# st.markdown("---")
+# delete_targets: list[str] = []
+# with st.expander("🗑️ 食材を削除", expanded=True):
+#     if grouped_options:
+#         delete_targets = st.multiselect(
+#             "削除したい食材を選択（複数選択可）",
+#             options=grouped_options,
+#             default=[],
+#             help="削除したい食材を複数選択できます。",
+#             key="delete_multiselect",
+#         )
+#         if st.button("選択した食材を削除"):
+#             ingredients = [
+#                 i for i in ingredients if i.get("name", "") not in delete_targets
+#             ]
+#             save_ingredients(ingredients)
+#             st.success(
+#                 f"{', '.join(delete_targets)} を削除しました。ページを再読み込みしてください。"
+#             )
+#     else:
+#         st.info("削除できる食材がありません。")

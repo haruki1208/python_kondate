@@ -5,6 +5,7 @@ import streamlit as st
 ### 自作モジュール ###
 from login import sign_out, sign_in, sign_up, get_user_name
 from ingredients_manager import ingredients_manager
+from suggest_recipes import suggest_recipes
 
 
 ### 画面定義 ###
@@ -60,9 +61,8 @@ def main_app():
     ### サイドバー ###
     st.sidebar.write(f"ログイン中：{user_name} さん")
     menu = [
-        "レシピ提案",
         "食材管理",
-        "1週間の献立",
+        "レシピ検索",
         "お気に入りレシピ",
         "買い物リスト",
         "料理記録",
@@ -70,14 +70,11 @@ def main_app():
     ]
     choice = st.sidebar.selectbox("メニュー", menu)
 
-    if choice == "レシピ提案":
-        st.write("レシピ提案画面です。")  # ここにレシピ提案のコードを追加予定
-
-    elif choice == "食材管理":
+    if choice == "食材管理":
         ingredients_manager(user_id)
 
-    elif choice == "1週間の献立":
-        st.write("1週間の献立画面です。")  # ここに1週間の献立のコードを追加予定
+    elif choice == "レシピ検索":
+        suggest_recipes(user_id)
 
     elif choice == "お気に入りレシピ":
         st.write("お気に入りレシピ")  # ここにお気に入りレシピのコードを追加予定
