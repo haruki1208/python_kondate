@@ -6,6 +6,7 @@ import streamlit as st
 from login import sign_out, sign_in, sign_up, get_user_name
 from ingredients_manager import ingredients_manager
 from suggest_recipes import suggest_recipes
+from favorite_manager import favorite_manager
 
 
 ### 画面定義 ###
@@ -77,7 +78,7 @@ def main_app():
         ingredients_manager(user_id)
 
     elif choice == "お気に入りレシピ":
-        st.write("お気に入りレシピ")  # ここにお気に入りレシピのコードを追加予定
+        favorite_manager(user_id)
 
     elif choice == "買い物リスト":
         st.write("買い物リスト画面です。")  # ここに買い物リストのコードを追加予定
