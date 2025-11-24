@@ -4,6 +4,14 @@ import requests
 import random
 from collections import Counter
 
+#######################
+## レシピ提案モジュール
+## suggest_recipes.py
+#######################
+## 画面：献立提案
+## 機能：YouTubeからレシピ/弁当動画を検索して提案
+#######################
+
 
 ### 初期設定 ###
 SUPABASE_URL = st.secrets["SUPABASE"]["URL"]

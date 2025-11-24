@@ -1,6 +1,14 @@
 import streamlit as st
 from supabase import create_client, Client
 
+#######################
+## 食材管理モジュール
+## ingredients_manager.py
+#######################
+## 画面：食材管理
+## 機能：食材の追加、削除、チェック状態管理
+#######################
+
 ### 初期設定 ###
 SUPABASE_URL = st.secrets["SUPABASE"]["URL"]
 SUPABASE_KEY = st.secrets["SUPABASE"]["KEY"]

@@ -1,6 +1,14 @@
 import streamlit as st
 from supabase import create_client, Client
 
+#######################
+## ログインモジュール
+## login.py
+#######################
+## 画面：ログイン / 新規登録
+## 機能：認証、ユーザ情報取得
+#######################
+
 ### Supabase接続設定 ###
 SUPABASE_URL = st.secrets["SUPABASE"]["URL"]
 SUPABASE_KEY = st.secrets["SUPABASE"]["KEY"]

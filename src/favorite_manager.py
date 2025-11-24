@@ -1,6 +1,15 @@
 import streamlit as st
 from supabase import create_client, Client
 
+#######################
+## お気に入りレシピ管理モジュール
+## favorite_manager.py
+#######################
+## 画面：お気に入りレシピ管理
+## 機能：お気に入りレシピの追加、編集、削除
+#######################
+
+
 ### 初期設定 ###
 SUPABASE_URL = st.secrets["SUPABASE"]["URL"]
 SUPABASE_KEY = st.secrets["SUPABASE"]["KEY"]
@@ -69,6 +78,7 @@ def favorite_manager(user_id):
         st.info("お気に入りのレシピがありません。上のフォームから追加してください。")
         return
 
+    st.markdown("---")
     st.write("📖 登録済みお気に入りレシピ")
     for recipe in recipes:
         # with st.expander(f"🍴 {recipe['name']}", expanded=False):
